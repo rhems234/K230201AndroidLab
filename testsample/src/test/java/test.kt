@@ -17,8 +17,53 @@ class test {
 }
 
 fun main() {
+    var data12 = arrayOf<Int>(1,2,3)
+    for((index, value) in data12.withIndex()) {
+        print("인덱스의 값 : ")
+        println(index)
+        print("value의 값 : ")
+        println(value)
+        if(index !== data12.size-1) {
+            print(",")
+        }
+    }
+    println()
 
+    //------------------------------------------------------------------
+    //반복문 활용해보기
+    fun sum10 ():Int {
+        var result = 0
+        // in 1..10, in 1 until 10, in 1..10 step 2, i in 10 downTo 1
+        for (i in 10 downTo  1 step  2) {
+            val sum = 0
+            var result = sum + i
+            println("반복문의 result의 값은 : $result")
+        }
+        return result
+    }
+    sum10()
 
+    //반복문 활용해보기
+    var data11 = arrayOf<Int>(1,2,3)
+    for(i in data11.indices) {
+        print(data11[i])
+        if(i !== data11.size-1) {
+            print(",")
+        }
+    }
+    println()
+    //=========================================================
+    var data10 = 5
+    val result10 = when{
+        // is 해당 타입이 맞는지 확인.
+        data10 < 10 -> "data10의 값은 문자열"
+        else -> {
+            "data10 의 값은 ??"
+        }
+    }
+    println("data10 조건으로 result10 출력하기 : $result10")
+
+//=====================================================================
     var data9 : Any =  5
     when (data9) {
         // is 해당 타입이 맞는지 확인.
