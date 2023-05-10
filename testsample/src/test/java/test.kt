@@ -15,8 +15,126 @@ val num : Int = 1
 // val num2 : String;
 class test {
 }
+// 코틀린에서는 기본적으로 상속이 안됩니다.
+// 그래서, 필요한 키워드가 : open
+// 부모꺼를 사용 할려면, 반드시 초기화를 해야 사용가능합니다.
+// super() 주생성자 호출 해야합니다.
+open class Super{
+    open var superData = 10
+    // 접근 지정자 확인, protected 만 확인
+    // 결론, 자식 클래스에서만, 부모 클래스 멤버에 접근 가능 여부 확인.
+    // 즉, main 함수에서는 접근 불가
+    protected var protectedData = 20
+    open fun superFun() {
+        println("I am spuerFun : $superData")
+    }
+}
+class Sub : Super(){
+    // 부모의 멤버를 다시 재정의해서 사용할려고 하는데. 안됨.
+    // 이유? 키워드, open, override 없어서.
+    override var superData = 20
+
+    override fun superFun() {
+        // 자식 클래스 접근 가능.
+        protectedData++
+       println("자식의 재정의 : " +superData)
+    }
+}
+
+class User3(name: String){
+    // 주생성자 생략 -> 디폴트 생성자를 만들어줌.
+    // 보조 생성자를 이용
+
+    // 문제점 -> 주 생성자와, 보조 생성자가 같이 있을 경우
+    // 해결책 -> 보조 생성자에서, 주 생성자로 연결하는 부분이 필요
+    // this
+    // 결론, 보조 생성자를 이용하면 되지만, 주 생성자를 이용해라.
+    // 작업 할 때에도, 주 생성자에서 작업을 더 많이 하는 편.
+    constructor(name: String, count: Int) : this(name){
+
+    }
+}
+
+class User2(val name: String, count:Int){
+    // 주생성자의 지역변수 name
+    // 주생성자는 class 이름 옆에 선언이 되고, constructor를 생략을 많이함
+
+    // 클랙스의 멤버 변수 name
+    //var name="lsy"
+    init {
+        // init 함수 안에서는 주 생성자의 매개변수를 사용가능.
+        // 하지만, class 멤버 변수로는 사용이 불가능.
+        println("init 호출. 주생성자 매개변수 사용 : $name")
+    }
+
+    fun someFun() {
+        println("init 호출. 주생성자 매개변수 사용 : $name")
+    }
+}
+
+class User{ // 주 생성자가 생략이 되었고, 보조 생성자를 사용.
+    var name = "pjs"
+    // 생성자 모양이, 자바에서는 클래스명으로 똑같지만,
+    // 코틀린은 생성자 키워드가 따로 존재함.
+    // 보조 생성자
+    constructor(name : String) {
+        this.name = name
+    }
+    fun someFun() {
+        println("name : $name")
+    }
+    class SomeClass{ }
+}
+
+// 비 data 클래스
+class NonDataClass(val name: String, val pw:String){
+    lateinit var email:String
+    constructor(name: String, pw: String, email:String):this(name, pw) {
+        this.email = email
+    }
+}
+//  data 클래스 -> 실제 값을 비교 해주는 변수는 주 생성자의 변수만 해줌.
+data class DataClass(val name: String, val pw:String){
+
+}
 
 fun main() {
+    // data 클래스 실제 값 비교
+    val data13 = DataClass("lsy", "1234")
+    val data14 = DataClass("lsy", "1234")
+    println("data13 주소값 : $data13")
+    println("data14 주소값 : $data14")
+    println("equals 이용한 값비교 : ${data13.equals(data14)}")
+
+    // 실제 값이 아닌, 메모리 주소값 비교 부분 확인.
+    val non1 = NonDataClass("lsy", "1234")
+    val non2 = NonDataClass("lsy", "1234")
+    println("non1의 주소값 : $non1")
+    println("non2의 주소값 : $non2")
+    println("equals 이용한 값비교 : ${non1.equals(non2)}")
+
+    //=================================================================
+    val obj = Sub()
+    obj.superData = 20
+    obj.superFun()
+    // 접근 불가
+    //obj.protectedData
+
+    //=================================================================
+    var user3 = User3("kkang", 10)
+
+    // ================================================================
+    val user2 = User2("pjs", count = 10)
+    println("user2 사용해보기 : " +user2)
+
+    //객체 생성, 인스턴스 생성
+    // 자바 : User user = new User("pjs");
+    val user = User("박준성")
+    println("user의 name : "+user.name)
+    user.someFun()
+
+
+    //==============================================================
     var data12 = arrayOf<Int>(1,2,3)
     for((index, value) in data12.withIndex()) {
         print("인덱스의 값 : ")
