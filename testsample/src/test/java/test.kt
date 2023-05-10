@@ -94,14 +94,110 @@ class NonDataClass(val name: String, val pw:String){
     }
 }
 //  data 클래스 -> 실제 값을 비교 해주는 변수는 주 생성자의 변수만 해줌.
-data class DataClass(val name: String, val pw:String){
+data class DataClass(val name: String, val pw:String, val email:String){
+    /*lateinit var email:String
+    constructor(name: String, pw: String, email:String):this(name, pw) {
+        this.email = email
+    }*/
+}
 
+open class Super2{
+    open var data = 10
+    open fun some() {
+        println("I am super some() : $data")
+    }
+}
+
+val obj = object:Super2() { // 타입을 지정을 안하면 Any 기본값
+    // 이렇게 사용 못하니, 반드시 타입을 지정 해야함.
+    override var data = 20
+    override fun some() {
+        println("i am object some() : $data")
+    }
+}
+
+class companionClassTest {
+    // 자바의 static 키워드와 동일한 기능.
+    // 멤버에 접근시, 클래스명에 점을 찍고 접근 함.
+    companion object{
+        var data = 10
+        fun some() {
+            println("data의 값 : $data")
+        }
+    }
+}
+
+// 고차함수 사용 예제,
+// 고차함수 : 매개변수 또는 결과 값 자리에 함수가 들어가는 형태
+fun testH(arg:(Int)->Boolean):()->String {
+    val result = if(arg(10)) {
+        "valid"
+    } else {
+        "invalid"
+    }
+    return {"testH result 확인 : $result"}
 }
 
 fun main() {
+    // ? null 허용 연산자 및,
+    // ?. null 허용 변수 호출 : 접근시 반드시 ?. 접근.
+    // ?: 엘비스 연산자 : null 이 아니면, 아닌 값이 호출되고,
+    // null 이면, 지정한 기본값이 할당.
+    val data20:String? = "lsy"
+    println("data20의 길이 : ${data20?.length ?: 0}" )
+
+    //===================================================================
+    //고차함수 사용예제
+    val result16 = testH({no -> no > 0})
+    println("result16의 값 조회 : $result16")
+
+    //==================================================================
+    val some2 = {no1:Int, no2:Int -> println("출력")
+        no1*no2
+    }
+    println("익명함수 출력 확인 : ${some2(1,2)}")
+
+    //=================================================================
+    // 매개변수가 1개인 람다식(익명함수), it로 대체 하기
+    // 자동으로 컴파일러가, 자바 문법 -< 코틀린 문법으로 대체할 때,
+    // 자동 변환시, 매개변수가 1개인 경우 it로 바로 대체함.
+    // request, 응답 객체 resoponse 응답 객체 하나만 가리킬 때,
+    // 이런 경우에도 it을 많이 사용함.
+    val result14 : (Int)->Unit = {println(it)}
+    val y = result14(100)
+
+    // 함수 타입. 변수에서 데이터 타입이 있듯이,
+    // 함수 타입있음. 익명 클래스 만들 때, object
+    // 클래스 선언부 뒤에 생략
+    // 함수도 결과값의 타입을 생략한다면 -> Unit(void)
+    // 익명 함수이지만, 이것의 타입을 명시.
+
+    //==================================================================
+    // 일반 함수
+    fun some(no1:Int, no2:Int):Int {
+        return no1 + no2
+    }
+    // 람다식, 익명 함수 : 중괄호 안에, 왼쪽: 매개변수,
+    // 오른쪽 : 수행할 문장
+    // 매개변수가 없다면, 왼쪽 부분과 화살표 모두 생략가능.
+    val result13 = {no1:Int, no2:Int -> no1 + no2}
+    val x = result13(1,2)
+    println("x의 값 : $x")
+
+    // =================================================================
+    //companion 클래스 사용 예제
+    companionClassTest.data
+    companionClassTest.some()
+
+    //===================================================================
+    // object 익명 클래스 사용 예제
+    obj.data = 30
+    obj.some()
+
+    //===================================================================
     // data 클래스 실제 값 비교
-    val data13 = DataClass("lsy", "1234")
-    val data14 = DataClass("lsy", "1234")
+    val data13 = DataClass("lsy", "1234", "email1")
+    val data14 = DataClass("lsy", "1234", "email2")
     println("data13 주소값 : $data13")
     println("data14 주소값 : $data14")
     println("equals 이용한 값비교 : ${data13.equals(data14)}")
