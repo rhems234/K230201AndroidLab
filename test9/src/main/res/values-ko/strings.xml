@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">테스트9</string>
+    <string name="appDesc">설명</string>
+    <string name="test">반복적으로 사용되는 문자열을 재사용합니다.</string>
+</resources>
