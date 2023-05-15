@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
-
     <!-- 퍼미션 설정 부분 -->
     <!-- 시스템 앱에 접근 하기 위한 샘플, 네트워크 접근(노말), 위치접근(dangerous) -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -15,10 +14,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.K23021AndroidLab">
+        <activity
+            android:name=".MainActivity306"
+            android:exported="true" />
+        <activity
+            android:name=".MainActivity305"
+            android:exported="true" />
+
         <receiver
             android:name=".ReplyReceiver"
             android:enabled="true"
-            android:exported="true"></receiver>
+            android:exported="true" />
         <receiver
             android:name=".OneReceiver"
             android:enabled="true"
