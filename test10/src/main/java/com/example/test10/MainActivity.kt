@@ -6,6 +6,9 @@ import android.app.ProgressDialog.show
 import android.app.TimePickerDialog
 import android.content.DialogInterface
 import android.content.pm.PackageManager
+import android.media.MediaPlayer
+import android.media.RingtoneManager
+import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -80,6 +83,19 @@ class MainActivity : AppCompatActivity() {
             requestPermissionLauncher.launch("android.permission.ACCESS_FINE_LOCATION")
         }
 
+        // 샘플 영상 확인 작업.
+       /* binding.btnVideo.setOnClickListener {
+            val player : MediaPlayer = MediaPlayer.create(this,R.raw)
+            player.start()
+        }*/
+
+        // 소리 부분 확인 작업.
+        binding.btnSound.setOnClickListener {
+            val notification : Uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+            val ringtone = RingtoneManager.getRingtone(applicationContext, notification)
+            ringtone.play()
+        }
+
         // 다이얼로그에 체크박스 선택 부분 해보기.
         binding.btnCheck.setOnClickListener {
             val items = arrayOf<String>("두루치기", "된장찌개", "밀면", "칼국수")
@@ -103,8 +119,9 @@ class MainActivity : AppCompatActivity() {
                     }
                 )
                 setPositiveButton("닫기" ,null)
+                setCancelable(true)
                 show()
-            }
+            }.setCanceledOnTouchOutside(true)
         }
 
         // 다이얼로그에 메뉴 선택 부분 확인 해보기
