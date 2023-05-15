@@ -2,10 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--퍼미션 설정 부분-->
-    <permission android:name="com.example.permission.Test_permission"
-        android:label="test permission"
-        android:description="test description"
-        android:protectionLevel="dangerous"/>
 
         <!--시스템 앱에 접근 하기 위한 샘플, 네트워크 접근(노말), 위치접근(dangerous) -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
@@ -23,8 +19,7 @@
         <!--퍼미션을 해당 액티비티에 할당하는 부분-->
         <activity
             android:name=".MainActivity"
-            android:exported="true"
-            android:permission="com.example.permission.Test_permission">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

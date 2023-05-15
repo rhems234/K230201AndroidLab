@@ -1,18 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
+    <Button
+        android:id="@+id/btnCheck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="checkBox 다이얼로그 버튼"
+        android:textSize="30sp"
+        />
+
+    <Button
+        android:id="@+id/btnMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="메뉴 다이얼로그 버튼"
+        android:textSize="30sp"
+        />
+
+    <Button
+        android:id="@+id/btnAlert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="경고 다이얼로그 버튼"
+        android:textSize="30sp"
+        />
+
+    <Button
+        android:id="@+id/testbtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="시간 다이얼로그"
+        android:textSize="30sp"
+        />
+
+    <Button
+        android:id="@+id/toastbtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Toast Button"
+        android:textSize="30sp"/>
+    <Button
+        android:id="@+id/toastbtn2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Toast Button2"
+        android:textSize="30sp"/>
+
     <TextView
-        android:layout_width="79dp"
-        android:layout_height="111dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Hello World!"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <Button
+        android:id="@+id/btnDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="날짜 다이얼 버튼"
+        android:textSize="30sp"/>
+
+</LinearLayout>
