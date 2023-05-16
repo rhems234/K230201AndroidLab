@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragment_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"></LinearLayout>
+<!--
+이 부분이 각 프래그먼트들이 부품처럼 보여지는 하나의 뷰의 틀-->
