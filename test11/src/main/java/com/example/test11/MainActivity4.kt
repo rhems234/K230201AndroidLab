@@ -21,7 +21,7 @@ class MainActivity4 : AppCompatActivity() {
         val binding = ActivityMain4Binding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // 임시 데이턷
+        // 임시 데이터
         val datas = mutableListOf<String>()
         for (i in 1..9) {
             datas.add("Item $i")
@@ -42,8 +42,16 @@ class MainActivity4 : AppCompatActivity() {
 }
 
 // 뷰 홀더 만들기. (item.342.xml 의 자동생성된 바인딩 파일 사용)
+// 여기에 항목은 목록의 구성 요소들의 뷰 객체를 모아 두었다.
+// 샘플로 텍스트 뷰 한개만 구성됨. Item342Binding
 class MyViewHolder(val binding: Item342Binding) : RecyclerView.ViewHolder(binding.root)
 // 어댑터 만들기.
+// 데이터 연동 -> 현재 임시 데이터 리스트 9개 값을 -> 해당 뷰 홀더의 아이템 요소의 값으로 사용.
+// 나중에, 텍스트, 이미지 등 여러 데이터를 해당 뷰에 할당 작업.
+// 보통 데이터는 API 서버에서 받아온 값(중간 데이터로 json 형식으로 받아서, 필요한 요소만 사용할 예정.
+// 예를들어, 공공데이터, 한 아이템의 요소의 값이 10개있으면, 그 중에서 4개 정도 선택한다.
+// 썸네일 이미지 1개, 제목 1개, 위치 1개, 전화번호 1개
+// 해당 뷰에 하나씩 재할당 함.
 class MyAdapter(val datas:MutableList<String>):RecyclerView.Adapter<RecyclerView.ViewHolder>(){
     // 필수적으로 재정의 해야하는 함수들
     // 다 적어도 되지만, 자동완성으로 , 해당 클래스에서 선택하면, 자동 구현 링크 클릭하기.
@@ -71,6 +79,7 @@ class MyAdapter(val datas:MutableList<String>):RecyclerView.Adapter<RecyclerView
         binding.itemData.text = datas[position]
 
         // 뷰에 이벤트 추가. 리사이클러 뷰 그룹 레이아웃.
+        // 옵션.
         binding.itemRoot.setOnClickListener{
             // 어댑터 클래스는, 액티비트 컴포넌트 클래스가 아니라서, 이것 사용할려면, 해당 부모 클래스에서
             // 상속을 받아서 사용해야합니다. 일단 로그캣으로 출력으로 대체
