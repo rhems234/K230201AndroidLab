@@ -9,25 +9,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.K23021AndroidLab">
         <activity
-            android:name=".MainActivity443"
+            android:name=".AddActivity"
             android:exported="true" />
-        <activity
-            android:name=".KeyboardActivity"
-            android:exported="true"
-            android:windowSoftInputMode="adjustResize"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name=".BundleActivity"
-            android:exported="true" />
-        <activity
-            android:name=".DetailActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="ACTION_EDIT" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
         <activity
             android:name=".MainActivity"
             android:exported="true">

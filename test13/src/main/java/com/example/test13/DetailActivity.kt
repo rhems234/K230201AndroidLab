@@ -22,6 +22,7 @@ class DetailActivity : AppCompatActivity() {
         binding.btn2.setOnClickListener {
             // 작업 set
             intent.putExtra("result", "후처리 데이터 값")
+            intent.putExtra("result2", "후처리 데이터 값2")
             // 결과 코드와, 인텐트 전달 작업.
             setResult(RESULT_OK, intent)
             // 현재 화면 종료.
