@@ -20,10 +20,39 @@ class MainActivity2 : AppCompatActivity() {
     lateinit var binding : ActivityMain2Binding
     lateinit var filePath: String
 
+    // 에뮬레이터 실제 물리 경로
+    // storage -> emulated -> 0 -> Android -> data -> com.example.test16 -> files -> Pictures
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMain2Binding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // 순서 2
+        // 카메라 앱 촬영 후 사진 재활용.
+        //camera request launcher.................
+        // 카메라에서 넘어온 사진 데이터를 처리해서,
+        // 앱별 저장소(우리가 지정한, Pictures에 파일로 저장 작업)
+        val requestCameraFileLauncher = registerForActivityResult(
+            // 후 처리.
+            ActivityResultContracts.StartActivityForResult()) {
+            // 원본 사진 크기 그대로 읽거나 처리 작업하면, OOM 사이즈 줄여야한다.
+
+            // 갤러리 설명했음.
+            val calRatio = calculateInSampleSize(
+                // 저장할 물리 파일의 위치를 Uri 타입으로 변경.
+                Uri.fromFile(File(filePath)),
+                resources.getDimensionPixelSize(R.dimen.imgSize),
+                resources.getDimensionPixelSize(R.dimen.imgSize)
+            )
+            // 갤러리 주석 참고.
+            val option = BitmapFactory.Options()
+            option.inSampleSize = calRatio
+            val bitmap = BitmapFactory.decodeFile(filePath, option)
+            bitmap?.let {
+                binding.userImageView.setImageBitmap(bitmap)
+            }
+        }
 
         // 갤러리 앱에서 사진 선택 후, 후처리 하기.
         // 참고 코드 : ch16_provider -> MainActivity,
@@ -87,42 +116,48 @@ class MainActivity2 : AppCompatActivity() {
             requestGalleryLauncher.launch(intent)
         }
 
-        //camera request launcher.................
-        val requestCameraFileLauncher = registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()){
-            val calRatio = calculateInSampleSize(
-                Uri.fromFile(File(filePath)),
-                resources.getDimensionPixelSize(R.dimen.imgSize),
-                resources.getDimensionPixelSize(R.dimen.imgSize)
-            )
-            val option = BitmapFactory.Options()
-            option.inSampleSize = calRatio
-            val bitmap = BitmapFactory.decodeFile(filePath, option)
-            bitmap?.let {
-                binding.userImageView.setImageBitmap(bitmap)
-            }
-        }
-
-
         binding.cameraButton.setOnClickListener {
             //camera app......................
             //파일 준비...............
+            // 현재 날짜와 시간을 조합해서 yyyyMMdd_HHmmss, 문자열 형식으로 만들어줌.
             val timeStamp: String =
                 SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+            // 실제 저장되는 물리 경로,
+            // 앱별 저장소, getExternalFilesDir 이용하면,
+            // 개발자가 앱별 저장소에 접근 하기 위해서, 시스템에 요청, 콘텐츠 프로바이더를 이용함.
+            // 그 때 , 사용할 경로도 설정을 같이 함.
+            // xml -> 경로 설정.
+            // DIRECTORY_PICTURES 상수, 즉 갤러리 위치에 물리파일 저장.
             val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+            // 실제 물리 파일을 만드는 작업.
+            // 파일명 : JPEG_yyyyyMMdd_HHmmss_브레드.jpg
+            // storageDIR : 경로에 물리 파일 만들어짐.
             val file = File.createTempFile(
                 "JPEG_${timeStamp}_",
                 ".jpg",
                 storageDir
             )
+            // 실제 물리 파일의 위치 주소, 절대 경로.
             filePath = file.absolutePath
+            // 컨텐츠 프로바이더를 이용해서 외부 저장 경로에 접근,
+            // 암구호 : com.example.ch16_provider.fileprovider 인증이되면,
+            // 해당 경로에 접근이 가능하고, 파일 위치 정보도 알아 낼 수 있음.
+            // 매니페스트 파일에서 설정1
+            // res -> xml 여기서 경로 설정2
+            // 복사
             val photoURI: Uri = FileProvider.getUriForFile(
                 this,
-                "com.example.ch16_provider.fileprovider",
+                "com.example.test16.fileprovider",
                 file
             )
+            // MediaStore.ACTION_IMAGE_CAPTURE : 카메라 앱 호출.
             val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            // 카메라 앱에 데이터를 전달, 키 값 : 상수, output 문자열
+            // value 값은 : photoURI : context 자기자신 객체, 액티비티
+            // 암구호 : com.example.ch16_provider.fileprovider
+            // 물리파일 이름.
             intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+            // 후처리 작업. 현재 앱 -> 카메라 앱, 사진 촬영한 사진 데이터 -> 현재 앱으로 가져오기.
             requestCameraFileLauncher.launch(intent)
 
         }
