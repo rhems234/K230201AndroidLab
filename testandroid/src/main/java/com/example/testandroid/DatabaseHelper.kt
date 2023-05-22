@@ -19,7 +19,11 @@ class DatabaseHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAM
     override fun onCreate(db: SQLiteDatabase) {
         // 앱이 설치후, 해당 클래스가 최초에 실행이 되면,
         // onCreate 함수가 최초 1회 호출.
-        db.execSQL("create table " + TABLE_NAME + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, NAME TEXT, PHONE TEXT, ADDRESS TEXT)")
+        db.execSQL("create table " + TABLE_NAME + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "NAME TEXT," +
+                "EMAIL TEXT," +
+                "PASSWORD TEXT" +
+                "PHONE TEXT)")
     }
     // 이 클래스 사용하면, 지정된 데이터베이스 파일에, 테이블이 생성이 됩니다.
     // 생성된 물리 경로 주소.
@@ -35,7 +39,7 @@ class DatabaseHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAM
     }
 
     // 데이터베이스 추가하기 insert
-    fun insertData(name: String?, phone: String?, address: String?): Boolean {
+    fun insertData(name: String?, email:String?, password: String?, phone: String?): Boolean {
         // DB 사용시 쓰기, 수정, 삭제 -> writableDatabase 사용함.
         val db = this.writableDatabase
         // execSQL -> 대신에 ContentValues()를 이용하면
@@ -43,8 +47,9 @@ class DatabaseHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAM
         // 이용하면, 쉽게 insert를 구현가능.
         val contentValues = ContentValues()
         contentValues.put(COL_2, name)
-        contentValues.put(COL_3, phone)
-        contentValues.put(COL_4, address)
+        contentValues.put(COL_3, email)
+        contentValues.put(COL_4, password)
+        contentValues.put(COL_5, phone)
         val result = db.insert(TABLE_NAME, null, contentValues)
         return if (result == -1L) false else true
     }
@@ -63,13 +68,14 @@ class DatabaseHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAM
     }
 
     //데이터베이스 수정하기
-    fun updateData(id: String, name: String?, phone: String?, address: String?): Boolean {
+    fun updateData(id: String, name: String?, email:String?, password: String?, phone: String?): Boolean {
         val db = this.writableDatabase
         val contentValues = ContentValues()
         contentValues.put(COL_1, id)
         contentValues.put(COL_2, name)
-        contentValues.put(COL_3, phone)
-        contentValues.put(COL_4, address)
+        contentValues.put(COL_3, email)
+        contentValues.put(COL_4, password)
+        contentValues.put(COL_5, phone)
         db.update(TABLE_NAME, contentValues, "ID = ?", arrayOf(id))
         return true
     }
@@ -84,7 +90,8 @@ class DatabaseHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAM
         // 테이블 항목
         const val COL_1 = "ID"
         const val COL_2 = "Name"
-        const val COL_3 = "Phone"
-        const val COL_4 = "Address"
+        const val COL_3 = "Email"
+        const val COL_4 = "PassWord"
+        const val COL_5 = "Phone"
     }
 }

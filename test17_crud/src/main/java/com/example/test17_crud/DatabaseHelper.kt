@@ -6,10 +6,6 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
-// 출처 : https://jw0652.tistory.com/590
-// 변경 사항은 자바 -> 코틀린 형식으로 변경.
-// 뷰 객체 선택 방법이 findViewById -> 뷰 바인딩 형식으로 변경.
-// 이 외에는 다 동일.
 class DatabaseHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAME, null, 1) {
     // 1번 매개변수 context -> this 현재 호출이 된 액티비티를 의미.
     // 2번 매개변수 데이터베이스 파일명 ->

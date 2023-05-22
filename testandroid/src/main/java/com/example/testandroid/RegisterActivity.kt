@@ -23,6 +23,7 @@ import java.util.Date
 class RegisterActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityRegisterBinding
+    var DB:DatabaseHelper?=null
     lateinit var filePath:String
     var isExistBlank = false
     var isPWSame = false
@@ -31,6 +32,7 @@ class RegisterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        DB = DatabaseHelper(this)
 
         val requestCamerFileLauncher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
@@ -93,11 +95,13 @@ class RegisterActivity : AppCompatActivity() {
         val pw = binding.signPW
         val pw2 = binding.signPW2
 
+        // 뒤로가기
         binding.back.setOnClickListener {
             val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
             startActivity(intent)
         }
 
+        // 비밀번호 확인
         binding.pwcheckbutton.setOnClickListener {
             if (pw.getText().toString().equals(pw2.getText().toString())) {
                 Toast.makeText(this@RegisterActivity, "비밀번호 일치", Toast.LENGTH_SHORT).show()
@@ -106,76 +110,41 @@ class RegisterActivity : AppCompatActivity() {
             }
         }
 
+        // 회원가입 버튼
        binding.signupbutton.setOnClickListener {
-           Log.d("lsy", "회원가입 버튼 클릭")
+           val name = binding.signName.text.toString()
+           val email = binding.signmail.text.toString()
+           val password = binding.signPW.text.toString()
+           val repass = binding.signPW2.text.toString()
+           val phone = binding.signPhone.text.toString()
 
-           val mail = binding.signmail.text.toString()
-           val pw = binding.signPW.text.toString()
-           val pw_re = binding.signPW2.text.toString()
-
-           if(mail.isEmpty() || pw.isEmpty() || pw.isEmpty()){
-               isExistBlank = true
-           }
-           else{
-               if(pw == pw_re){
-                   isPWSame = true
-               }
-           }
-           if(!isExistBlank && isPWSame){
-
-               // 회원가입 성공 토스트 메세지 띄우기
-               Toast.makeText(this, "회원가입 성공", Toast.LENGTH_SHORT).show()
-
-               // 유저가 입력한 id, pw를 쉐어드에 저장한다.
-               val sharedPreference = getSharedPreferences("file name", Context.MODE_PRIVATE)
-               val editor = sharedPreference.edit()
-               editor.putString("mail", mail)
-               editor.putString("pw", pw)
-               editor.apply()
-
-               // 로그인 화면으로 이동
-               val intent = Intent(this, LoginActivity::class.java)
-               startActivity(intent)
-
-           }
-           else{
-               // 상태에 따라 다른 다이얼로그 띄워주기
-               if(isExistBlank){   // 작성 안한 항목이 있을 경우
-                   dialog("blank")
-               }
-               else if(!isPWSame){ // 입력한 비밀번호가 다를 경우
-                   dialog("not same")
+           if(name == "" || email == "" || password == "" || phone =="") Toast.makeText(
+               this@RegisterActivity,
+               "회원정보를 전부 입력해주세요.",
+               Toast.LENGTH_SHORT
+           ).show() else {
+               if(password == repass) {
+                   val checkUsername = DB!!.insertData(name,email,password,phone)
+                   if (checkUsername == false) {
+                       val insert = DB!!.insertData(name, email, password, phone)
+                       if(insert == true){
+                           Toast.makeText(this@RegisterActivity, "가입되었습니다.",Toast.LENGTH_SHORT).show()
+                           val intent = Intent(applicationContext, LoginActivity::class.java)
+                           startActivity(intent)
+                       } else {
+                           Toast.makeText(this@RegisterActivity, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show()
+                       }
+                   } else{
+                       Toast.makeText(this@RegisterActivity, "이미 가입된 회원입니다.", Toast.LENGTH_SHORT).show()
+                   }
+               } else {
+                   Toast.makeText(this@RegisterActivity, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show()
                }
            }
        }
     }
 
-    private fun dialog(type: String){
-        val dialog = AlertDialog.Builder(this)
 
-        // 작성 안한 항목이 있을 경우
-        if(type.equals("blank")){
-            dialog.setTitle("회원가입 실패")
-            dialog.setMessage("입력란을 모두 작성해주세요")
-        }
-        // 입력한 비밀번호가 다를 경우
-        else if(type.equals("not same")){
-            dialog.setTitle("회원가입 실패")
-            dialog.setMessage("비밀번호가 다릅니다")
-        }
-
-        val dialog_listener = object: DialogInterface.OnClickListener{
-            override fun onClick(dialog: DialogInterface?, which: Int) {
-                when(which){
-                    DialogInterface.BUTTON_POSITIVE ->
-                        Log.d("lsy", "다이얼로그")
-                }
-            }
-        }
-
-        dialog.setPositiveButton("확인",dialog_listener)
-        dialog.show()
-    }
 
     private fun calculateInSampleSize(fileUri: Uri, reqWidth:Int, reqHeight:Int):Int{
         val options = BitmapFactory.Options()
