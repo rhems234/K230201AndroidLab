@@ -1,4 +1,4 @@
-package Adapter
+package com.example.test18.Adapter
 
 import android.content.Context
 import android.graphics.BitmapFactory
@@ -12,7 +12,7 @@ import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.test18.MyApplication
 import com.example.test18.databinding.ItemRetrofitBinding
-import model.UserModel
+import com.example.test18.model.UserModel
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -31,10 +31,13 @@ class MyAdapter(val context: Context, val datas: List<UserModel>?): RecyclerView
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val binding=(holder as MyViewHolder).binding
+        // datas -> List<UserModel> 한 요소가, 한 멤버의 객체입니다.
         val user = datas?.get(position)
+        // 받아온 데이터 전부를 다 사용안했음.
         binding.id.text=user?.id
         binding.firstNameView.text=user?.firstName
         binding.lastNameView.text=user?.lastName
+        binding.emailView.text=user?.email
 
         user?.avatar?.let {
             val avatarImageCall = (context.applicationContext as MyApplication).networkService.getAvatarImage(it)

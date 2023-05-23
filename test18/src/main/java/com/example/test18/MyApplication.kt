@@ -1,7 +1,7 @@
 package com.example.test18
 
 import android.app.Application
-import retrofit.INetworkService
+import com.example.test18.retrofit.INetworkService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 

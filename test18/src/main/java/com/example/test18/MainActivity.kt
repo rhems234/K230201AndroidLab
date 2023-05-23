@@ -4,8 +4,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import com.example.test18.databinding.ActivityMainBinding
-import model.UserListModel
-import model.UserModel
+import com.example.test18.model.UserListModel
+import com.example.test18.model.UserModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

@@ -1,7 +1,7 @@
-package retrofit
+package com.example.test18.retrofit
 
-import model.UserListModel
-import model.UserModel
+import com.example.test18.model.UserListModel
+import com.example.test18.model.UserModel
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.GET
