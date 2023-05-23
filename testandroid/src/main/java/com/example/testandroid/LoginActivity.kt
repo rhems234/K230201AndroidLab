@@ -34,7 +34,7 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        binding.login!!.setOnClickListener {
+       /* binding.login.setOnClickListener {
             val user = binding.editID.text.toString()
             val pass = binding.ediPassword.text.toString()
             if(user == "" || pass == "") Toast.makeText(
@@ -51,6 +51,6 @@ class LoginActivity : AppCompatActivity() {
                     Toast.makeText(this@LoginActivity, "회원정보가 존재하지 않습니다.", Toast.LENGTH_SHORT).show()
                 }
             }
-        }
+        }*/
     }
 }
